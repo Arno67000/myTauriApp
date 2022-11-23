@@ -7,7 +7,7 @@
         "distDir": "../dist"
     },
     "package": {
-        "productName": "my_desktop_app",
+        "productName": "my_app",
         "version": "0.1.0"
     },
     "tauri": {
@@ -15,12 +15,16 @@
             "all": true
         },
         "bundle": {
+            "deb": {
+                "files": {
+                    "/usr/lib/database": "../database/",
+                    "usr/lib/assets": "../dist/"
+                },
+                "depends": []
+            },
             "active": true,
             "category": "DeveloperTool",
             "copyright": "",
-            "deb": {
-                "depends": []
-            },
             "externalBin": [],
             "icon": [
                 "icons/32x32.png",
@@ -38,7 +42,7 @@
                 "providerShortName": null,
                 "signingIdentity": null
             },
-            "resources": ["../src/database/data.db"],
+            "resources": ["../database/data.db"],
             "shortDescription": "",
             "targets": "all",
             "windows": {

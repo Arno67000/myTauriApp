@@ -55,7 +55,7 @@ impl DataBase {
 #[tauri::command]
 pub fn set_db() -> Option<String> {
     let db = DataBase {
-        file_path: "../src/database/data.db".to_owned(),
+        file_path: "../database/data.db".to_owned(),
     };
 
     match DataBase::set(&db) {
@@ -75,7 +75,7 @@ pub fn set_db() -> Option<String> {
 #[tauri::command]
 pub fn user_signup(name: &str, password: &str) -> bool {
     let db = DataBase {
-        file_path: "../src/database/data.db".to_owned(),
+        file_path: "../database/data.db".to_owned(),
     };
     match DataBase::signup(&db, name, password) {
         Ok(_) => true,
@@ -89,7 +89,7 @@ pub fn user_signup(name: &str, password: &str) -> bool {
 #[tauri::command]
 pub fn user_login(password: &str) -> bool {
     let db = DataBase {
-        file_path: "../src/database/data.db".to_owned(),
+        file_path: "../database/data.db".to_owned(),
     };
     match DataBase::login(&db, password) {
         Ok(res) => res,
