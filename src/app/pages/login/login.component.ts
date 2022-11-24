@@ -115,4 +115,3 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.userService.login(password);
     }
 }
-

@@ -57,9 +57,13 @@
         "updater": {
             "active": false
         },
+        "systemTray": {
+            "iconPath": "icons/icon.ico"
+        },
         "windows": [
             {
                 "fullscreen": false,
+                "decorations": false,
                 "height": 600,
                 "resizable": true,
                 "title": "desktop",
