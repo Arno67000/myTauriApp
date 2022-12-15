@@ -4,13 +4,12 @@
 )]
 
 use tauri::{
-    CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem, Manager, Menu, MenuItem
+    CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem, Manager
 };
 
 mod database;
 
 fn main() {
-    let menu = Menu::new().add_native_item(MenuItem::Hide);
     let quit = CustomMenuItem::new(String::from("quit"), "Quit");
     let show = CustomMenuItem::new(String::from("show"), "Show");
     let tray_menu = SystemTrayMenu::new()
@@ -19,7 +18,6 @@ fn main() {
         .add_item(quit);
     let system_tray = SystemTray::new().with_menu(tray_menu);
     let app = tauri::Builder::default()
-    .menu(menu)
     .system_tray(system_tray)
     .on_system_tray_event(|app, event| match event {
         SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
