@@ -43,4 +43,8 @@ export class UserService {
             this.router.navigate(["/home"]);
         }
     }
+    logout() {
+        this.user.logged = false;
+        this.emitUser();
+    }
 }
