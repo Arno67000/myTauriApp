@@ -6,7 +6,7 @@ import { UserService } from "../../services/user.service";
 
 @Component({
     selector: "app-home",
-    template: `<button class="form-group-btn" type="button" (click)="logout()"><-</button> `,
+    template: `<button class="form-group-btn" type="button" (click)="onLogout()"><-</button> `,
     styles: [
         `
             .form-group-btn {
@@ -33,9 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.userService.emitUser();
 
         if (!this.user.logged) {
-            this.router.navigate(["/login"]).catch((error) => {
-                console.log(error);
-            });
+            this.router.navigate(["/login"]);
         }
     }
 
@@ -45,18 +43,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.userSubscription?.unsubscribe();
     }
 
-    logout(): void {
-        this.user = {
-            name: null,
-            logged: false
-        };
-        console.log("User logged out");
-        this.userService.emitUser();
-        this.router
-            .navigate(["/login"])
-            .then(() => console.log("navigated"))
-            .catch((error) => {
-                console.log(error);
-            });
+    onLogout(): void {
+        this.userService.logout();
+        this.router.navigate(["/login"]);
     }
 }
