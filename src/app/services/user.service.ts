@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Subject } from "rxjs";
 import { User } from "../models/interfaces";
@@ -14,7 +13,7 @@ export class UserService {
     };
     userSubject = new Subject<User>();
 
-    constructor(private router: Router) {}
+    constructor() {}
 
     emitUser() {
         this.userSubject.next(this.user);
@@ -31,7 +30,6 @@ export class UserService {
         if (validated) {
             this.user.logged = validated;
             this.emitUser();
-            this.router.navigate(["/home"]);
         }
     }
 
@@ -40,9 +38,9 @@ export class UserService {
         if (validated) {
             this.user.logged = validated;
             this.emitUser();
-            this.router.navigate(["/home"]);
         }
     }
+
     logout() {
         this.user.logged = false;
         this.emitUser();
