@@ -83,12 +83,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     loginForm: FormGroup;
 
     constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
-        this.userSubscription = this.userService.userSubject.subscribe((user) => (this.user = user));
+        this.userSubscription = this.userService.userSubject.subscribe((user) => {
+            this.user = user;
+            if (this.user.logged) {
+                this.router.navigate(["/home"]);
+            }
+        });
         this.userService.emitUser();
-
-        if (this.user.logged) {
-            this.router.navigate(["/home"]);
-        }
 
         this.signupForm = this.formBuilder.group({
             name: ["", Validators.required],

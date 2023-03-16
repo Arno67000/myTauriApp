@@ -30,12 +30,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
 
     constructor(private router: Router, private userService: UserService) {
-        this.userSubscription = this.userService.userSubject.subscribe((user) => (this.user = user));
+        this.userSubscription = this.userService.userSubject.subscribe((user) => {
+            this.user = user;
+            if (!this.user.logged) {
+                this.router.navigate(["/login"]);
+            }
+        });
         this.userService.emitUser();
-
-        if (!this.user.logged) {
-            this.router.navigate(["/login"]);
-        }
     }
 
     ngOnInit(): void {}
@@ -45,12 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        // this.user = {
-        //     name: null,
-        //     logged: false
-        // };
         this.userService.logout();
-        this.userService.emitUser();
-        // this.router.navigate(["/login"]);
     }
 }
