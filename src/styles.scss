@@ -4,8 +4,17 @@
     background-color: #000;
 }
 
+html,
+body {
+    border-radius: 2%;
+    height: 600px;
+    width: 800px;
+    margin: auto;
+}
+
 .titlebar {
-    height: 30px;
+    border-radius: inherit;
+    height: 20px;
     user-select: none;
     display: flex;
     justify-content: flex-end;

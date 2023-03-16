@@ -16,7 +16,8 @@ export class UserService {
 
     constructor(private router: Router) {}
 
-    emitUser() {
+    emitUser(user?: User) {
+        user && (this.user = user);
         this.userSubject.next(this.user);
     }
 
