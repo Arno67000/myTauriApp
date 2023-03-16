@@ -1,7 +1,10 @@
 use sqlite;
+use std::path::PathBuf;
+
 pub struct DataBase {
-    pub file_path: String,
+    pub file_path: PathBuf,
 }
+
 #[derive(Debug)]
 pub enum DatabaseError {
     DbErr(sqlite::Error),
@@ -20,6 +23,7 @@ impl DataBase {
         connection.execute("create table if not exists users (name text PRIMARY KEY, password text not null);")?;
         Ok(())
     }
+
     pub fn get(s:&Self) -> Result<Option<String>, DatabaseError> {
         let connection = sqlite::open(&s.file_path)?;
         let mut res = connection.prepare("select * from users;")?;
@@ -31,6 +35,7 @@ impl DataBase {
             Ok(None)
         }
     }
+
     pub fn login(s:&Self, password: &str) -> Result<bool, DatabaseError> {
         let connection = sqlite::open(&s.file_path)?;
         let mut res = connection.prepare("select * from users where password = ?;")?.bind(1, password)?;
@@ -52,11 +57,15 @@ impl DataBase {
 
 }
 
+fn prepare_db(app_handle: tauri::AppHandle) -> DataBase {
+    DataBase {
+        file_path: app_handle.path_resolver().resolve_resource("../database/data.db").expect("Couldn't resolve database localisation"),
+    }
+}
+
 #[tauri::command]
-pub fn set_db() -> Option<String> {
-    let db = DataBase {
-        file_path: "../database/data.db".to_owned(),
-    };
+pub fn set_db(app_handle: tauri::AppHandle) -> Option<String> {
+    let db = prepare_db(app_handle);
 
     match DataBase::set(&db) {
         Ok(_) => println!("DATABASE READY"),
@@ -73,10 +82,9 @@ pub fn set_db() -> Option<String> {
 }
 
 #[tauri::command]
-pub fn user_signup(name: &str, password: &str) -> bool {
-    let db = DataBase {
-        file_path: "../database/data.db".to_owned(),
-    };
+pub fn user_signup(app_handle: tauri::AppHandle, name: &str, password: &str) -> bool {
+    let db = prepare_db(app_handle);
+
     match DataBase::signup(&db, name, password) {
         Ok(_) => true,
         Err(DatabaseError::DbErr(ref e)) => {
@@ -87,10 +95,9 @@ pub fn user_signup(name: &str, password: &str) -> bool {
 }
 
 #[tauri::command]
-pub fn user_login(password: &str) -> bool {
-    let db = DataBase {
-        file_path: "../database/data.db".to_owned(),
-    };
+pub fn user_login(app_handle: tauri::AppHandle, password: &str) -> bool {
+    let db = prepare_db(app_handle);
+
     match DataBase::login(&db, password) {
         Ok(res) => res,
         Err(DatabaseError::DbErr(ref e)) => {

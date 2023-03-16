@@ -65,7 +65,9 @@ import { Router } from "@angular/router";
             .container {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 align-items: center;
+                height: 100%;
             }
         `
     ]
@@ -81,12 +83,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     loginForm: FormGroup;
 
     constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
-        this.userSubscription = this.userService.userSubject.subscribe((user) => (this.user = user));
+        this.userSubscription = this.userService.userSubject.subscribe((user) => {
+            this.user = user;
+            if (this.user.logged) {
+                this.router.navigate(["/home"]);
+            }
+        });
         this.userService.emitUser();
-
-        if (this.user.logged) {
-            this.router.navigate(["/home"]);
-        }
 
         this.signupForm = this.formBuilder.group({
             name: ["", Validators.required],
@@ -115,4 +118,3 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.userService.login(password);
     }
 }
-

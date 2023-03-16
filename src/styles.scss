@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+    color: #fff;
+    background-color: #000;
+}
+
+html,
+body {
+    border-radius: 2%;
+    height: 600px;
+    width: 800px;
+    margin: auto;
+}
+
+.titlebar {
+    border-radius: inherit;
+    height: 20px;
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    color: #000;
+}
+.titlebar-button:hover {
+    color: #fff;
+}
